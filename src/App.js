@@ -5,6 +5,7 @@ import HomePage from "./pages/HomePage"
 import RegisterPage from "./pages/RegisterPage"
 import HabitsPage from "./pages/HabitsPage"
 import TodayPage from "./pages/TodayPage"
+import HistoryPage from "./pages/HistoryPage"
 
 export default function App(){
     return (
@@ -16,6 +17,7 @@ export default function App(){
                     <Route path="/cadastro" element={<RegisterPage/>} />
                     <Route path="/hoje" element={<TodayPage/>}/>
                     <Route path="/habitos" element={<HabitsPage/>}/>
+                    <Route path="/historico" element={<HistoryPage/>}/>
                 </Routes>
             </ContainerScreen>
         </BrowserRouter>

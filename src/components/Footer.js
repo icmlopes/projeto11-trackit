@@ -8,7 +8,9 @@ export default function Footer (){
                 <h2>Hábitos</h2>
             </Link>
             <p>Hoje</p>
-            <h2>Histórico</h2>
+            <Link to={`/historico`}>
+                <h2>Histórico</h2>
+            </Link>
         </ContainerFooter>
     )
 }

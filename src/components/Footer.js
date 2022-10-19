@@ -4,29 +4,34 @@ import { Link } from "react-router-dom"
 export default function Footer (){
     return (
         <ContainerFooter>
-            <Link to={`/habitos`}>
-                <h2>Hábitos</h2>
-            </Link>
-            <p>Hoje</p>
-            <Link to={`/historico`}>
-                <h2>Histórico</h2>
-            </Link>
+            <Container>
+                <Link to={`/habitos`}>
+                    <h2>Hábitos</h2>
+                </Link>
+                <p>Hoje</p>
+                <Link to={`/historico`}>
+                    <h2>Histórico</h2>
+                </Link>
+            </Container>
         </ContainerFooter>
     )
 }
 
 const ContainerFooter = styled.div`
-width: 375px;
 height: 70px;
 background-color: #FFFFFF;
 position: fixed;
 bottom: 0;
 display: flex;
-justify-content: space-around;
-align-items: center;
 color: #52B6FF;
-font-size: 18px;
-font-weight: 400;
+
+`
+const Container = styled.div`
+width: 50vh;
+display: flex;
+align-items: center;
+justify-content: space-around;
+
 p{
     color: #FFFFFF;
     width: 91px;

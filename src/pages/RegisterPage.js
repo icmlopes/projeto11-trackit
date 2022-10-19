@@ -80,7 +80,8 @@ p{
     color: #52B6FF;
     font-size: 14px;
     font-weight: 400;
-    padding-left: 25px;
+    display: flex;
+    justify-content: center;
 }
 `
 

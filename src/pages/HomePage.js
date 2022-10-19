@@ -24,7 +24,7 @@ export default function Home() {
     }
 
     return (
-        <>
+        <Container>
             <ContainerLogo>
                  <img src={logo} alt="logo" />
             </ContainerLogo>
@@ -54,12 +54,20 @@ export default function Home() {
                     <p>Não tem uma conta? Cadastre-se!</p>
             </Link>
 
-        </>
+        </Container>
     )
 }
 
 
-
+const Container = styled.div`
+p{
+    color: #52B6FF;
+    font-size: 14px;
+    font-weight: 400;
+    display: flex;
+    justify-content: center;
+}
+`
 
 
 const ContainerLogo = styled.div`

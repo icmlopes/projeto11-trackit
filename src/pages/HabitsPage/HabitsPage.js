@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import NavBar from "../../components/NavBar";
 import Footer from "../../components/Footer";
-import { useState } from "react";
+import { useState, useContext, useEffect } from "react";
 import color from "./color";
 // import axios from "axios"
 
@@ -60,9 +60,25 @@ export default function HabitsPage() {
 
 function CreateHabitInput() {
 
-    
+    const week = ["D", "S", "T", "Q", "Q", "S", "S"]
 
-    const [days, setDays] = useState(["A", "G", "D"])
+    const [days, setDays] = useState([])
+    const [isDisabled, setIsDisabled] = useState(false)
+    const colors = ({
+      
+    })
+
+    function handleSelectedDay(d, index) {
+        console.log("aosf")
+        // setIsDisabled(true)
+        setDays([...days, index])
+        if (!days.includes(index)) {
+            setDays([...days, index])
+        } else {
+            const newList = days.filter(d => d !== index)
+            setDays(newList)
+        }
+    }
 
     return (
 
@@ -73,8 +89,12 @@ function CreateHabitInput() {
                     placeholder="nome do hábito"
                     name="name"
                 />
-                {days.map((d, i) => (
-                    <button>
+                {week.map((d, index) => (
+                    <button type="button"
+                        disabled= {isDisabled}
+                        onClick={() => handleSelectedDay(d, index)}
+                        selecionado = "false"
+                    >
                         {d}
                     </button>
                 ))}
@@ -146,9 +166,9 @@ input{
 button{
     width: 20px;
     height: 20px;
-    background-color: #FFFFFF;
-    color: #cfcfcf;
-    border: 1px solid #cfcfcf;
+    background-color: ${(props) => (props.selecionado === "true" ? "yellow" : "blue")};
+    color: #DBDBDB;
+    border: 1px solid #DBDBDB;
     margin-right: 3px;
     border-radius: 5px;
     padding: 1px;

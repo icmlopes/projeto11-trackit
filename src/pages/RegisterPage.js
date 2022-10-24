@@ -6,10 +6,12 @@ import axios from "axios"
 
 
 
+
 export default function RegisterPage(){
 
     const [form, handleForm] = useForm({email:"", name:"", image:"", password:""});
     const navigate = useNavigate()
+    
 
 
     function register(event){

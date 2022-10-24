@@ -3,22 +3,25 @@ import { BrowserRouter, Routes, Route } from "react-router-dom"
 import styled from "styled-components"
 import HomePage from "./pages/HomePage"
 import RegisterPage from "./pages/RegisterPage"
-import HabitsPage from "./pages/HabitsPage"
+import HabitsPage from "./pages/HabitsPage/HabitsPage"
 import TodayPage from "./pages/TodayPage"
 import HistoryPage from "./pages/HistoryPage"
+import Info from "./context/Info"
 
 export default function App(){
     return (
         <BrowserRouter>
             <ContainerScreen>
-                <GlobalStyle/>
-                <Routes>
-                    <Route path="/" element={<HomePage/>} />
-                    <Route path="/cadastro" element={<RegisterPage/>} />
-                    <Route path="/hoje" element={<TodayPage/>}/>
-                    <Route path="/habitos" element={<HabitsPage/>}/>
-                    <Route path="/historico" element={<HistoryPage/>}/>
-                </Routes>
+            <GlobalStyle/>
+                <Info>
+                    <Routes>
+                        <Route path="/" element={<HomePage/>} />
+                        <Route path="/cadastro" element={<RegisterPage/>} />
+                        <Route path="/hoje" element={<TodayPage/>}/>
+                        <Route path="/habitos" element={<HabitsPage/>}/>
+                        <Route path="/historico" element={<HistoryPage/>}/>
+                    </Routes>
+                </Info>
             </ContainerScreen>
         </BrowserRouter>
     )

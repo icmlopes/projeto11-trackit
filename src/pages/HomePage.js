@@ -3,12 +3,14 @@ import logo from "../assets/img/Logo.png"
 import { Link, useNavigate } from "react-router-dom";
 import {useForm} from "../components/useForm"
 import axios from "axios"
-
+import { InfoContext } from "../context/Info"
+import { useContext } from "react"
 
 export default function Home() {
 
     const [form, handleForm] = useForm ({email:"", password:""})
     const navigate = useNavigate()
+    const {user, setUser} = useContext(InfoContext);
 
     function login(e) {
         e.preventDefault();
@@ -16,7 +18,10 @@ export default function Home() {
         const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login"
         const promise = axios.post(URL, form)
 
-        promise.then(() => navigate("/hoje"))
+        promise.then(res => {
+            navigate("/hoje")
+            setUser(res.data)
+        })
 
         promise.catch((err) => {
             console.log(err.renponse.data)

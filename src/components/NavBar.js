@@ -1,11 +1,17 @@
 import styled from "styled-components";
+import { InfoContext } from "../context/Info"
+import { useContext } from "react"
 
 export default function NavBar(){
+
+    const {user, setUser} = useContext(InfoContext);
+
     return(
+
         <ContainerNav>
             <Items>
                 <h1>TrackIt</h1>
-                <img src="https://yt3.ggpht.com/ytc/AMLnZu9tYPIG3bxki2LZz-NRrvHtLHRL0-wW95Cjgcr2=s900-c-k-c0x00ffffff-no-rj" alt="foto perfil"/>
+                <img src={user.image} alt="foto perfil"/>
             </Items>
         </ContainerNav>
     )

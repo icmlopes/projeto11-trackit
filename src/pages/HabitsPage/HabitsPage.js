@@ -1,33 +1,11 @@
 import styled from "styled-components";
 import NavBar from "../../components/NavBar";
 import Footer from "../../components/Footer";
-import { useState, useContext, useEffect } from "react";
-import color from "./color";
-// import axios from "axios"
+import { useState, useContext } from "react";
+import axios from "axios"
+import { InfoContext } from "../../context/Info";
 
 export default function HabitsPage() {
-
-    // const [form, treatedForm] = useForm({ name: "", days: [] })
-
-    // function startHabit(event) {
-    //     event.preventDefault();
-
-    //     const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits";
-    //      const promise = axios.post(URL, form)
-
-    //      promise.then((res) => {
-    //         console.log(res.data)
-    //      })
-
-    //      promise.catch((err) => {
-    //         console.log(err.response.data)
-    //      })
-    // }
-
-    // const habits = [{ name:{}, days:{days}}]
-    // const [name, setName] = useState("")
-
-
 
     const [openHabitInput, setOpenHabitInput] = useState(false)
 
@@ -36,7 +14,6 @@ export default function HabitsPage() {
             setOpenHabitInput(true)
         } else (setOpenHabitInput(false))
     }
-
 
     return (
         <Container>
@@ -61,15 +38,13 @@ export default function HabitsPage() {
 function CreateHabitInput() {
 
     const week = ["D", "S", "T", "Q", "Q", "S", "S"]
-
+    const {user, setUser} = useContext(InfoContext);
     const [days, setDays] = useState([])
     const [isDisabled, setIsDisabled] = useState(false)
-    const colors = ({
-      
-    })
+    const [inputTitle, setInputTitle] = useState("")
 
     function handleSelectedDay(d, index) {
-        console.log("aosf")
+        console.log(index)
         // setIsDisabled(true)
         setDays([...days, index])
         if (!days.includes(index)) {
@@ -78,32 +53,65 @@ function CreateHabitInput() {
             const newList = days.filter(d => d !== index)
             setDays(newList)
         }
+        console.log(days)
+    }
+
+    function handleSubmit(event) {
+        event.preventDefault();
+
+        const body = {
+            name: inputTitle,
+            days: days
+        }
+
+        const config = {
+            headers: {
+                "Authorization": `Bearer ${user.token}`
+            }
+        }
+        console.log(body)
+        console.log(user)
+
+        const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits";
+        
+        const promise = axios.post(URL, body, config)
+
+         promise.then((res) => {
+            console.log(res.data)
+            console.log("Deu certo")
+         })
+
+         promise.catch((err) => {
+            console.log(err.response.data)
+         })
     }
 
     return (
 
         <CreateHabit>
-            <ContainerForm /*onSubmit={startHabit}*/ >
+            <ContainerForm onSubmit={handleSubmit} >
                 <input
                     type="text"
                     placeholder="nome do hábito"
                     name="name"
+                    onChange={(e) => setInputTitle(e.target.value)}
                 />
                 {week.map((d, index) => (
-                    <button type="button"
-                        disabled= {isDisabled}
+                    <Button type="button"
+                        disabled={isDisabled}
                         onClick={() => handleSelectedDay(d, index)}
-                        selecionado = "false"
+                        selecionado={days.includes(index) ? true : false}
                     >
                         {d}
-                    </button>
+                    </Button>
                 ))}
 
+                <ContainerChoice>
+                    <h3>Cancelar</h3>
+                    <button type="submit">Salvar</button>
+                </ContainerChoice>
             </ContainerForm>
-            <ContainerChoice>
-                <h3>Cancelar</h3>
-                <button type="submit">Salvar</button>
-            </ContainerChoice>
+
         </CreateHabit>
 
     )
@@ -153,7 +161,6 @@ flex-direction: column; */
 `
 
 const ContainerForm = styled.form`
-
 input{
     width: 95%;
     margin-bottom: 10px;
@@ -163,17 +170,19 @@ input{
     color: #DBDBDB;
     padding-left: 10px;
 }
-button{
+`
+
+const Button = styled.button`
     width: 20px;
     height: 20px;
-    background-color: ${(props) => (props.selecionado === "true" ? "yellow" : "blue")};
+    background-color: ${({ selecionado }) => selecionado === true ? "yellow" : "blue"};
     color: #DBDBDB;
     border: 1px solid #DBDBDB;
     margin-right: 3px;
     border-radius: 5px;
     padding: 1px;
- } 
-`
+ `
+
 // const Week = styled.div`
 // flex-direction: row;
 // display: flex;

@@ -32,6 +32,7 @@ export default function HabitsPage() {
                         addHabit={addHabit}
                         setAddHabit={setAddHabit}
                         setOpenHabitInput={setOpenHabitInput}
+                        handleOpenHabitInput={handleOpenHabitInput}
                     />
                     : <></>}
                 <ExistingHabit
@@ -45,7 +46,7 @@ export default function HabitsPage() {
     )
 }
 
-function CreateHabitInput({ addHabit, setAddHabit, setOpenHabitInput }) {
+function CreateHabitInput({ addHabit, setAddHabit, setOpenHabitInput, handleOpenHabitInput }) {
 
     const week = ["D", "S", "T", "Q", "Q", "S", "S"]
     const { user, setUser } = useContext(InfoContext);
@@ -120,8 +121,8 @@ function CreateHabitInput({ addHabit, setAddHabit, setOpenHabitInput }) {
                 ))}
 
                 <ContainerChoice>
-                    <h3>Cancelar</h3>
-                    <button type="submit">Salvar</button>
+                    <Cancel type="reset" onClick={handleOpenHabitInput}>Cancelar</Cancel>
+                    <Submit type="submit">Salvar</Submit>
                 </ContainerChoice>
             </ContainerForm>
 
@@ -208,7 +209,8 @@ height: fit-content;
 
 const ContainerContent = styled.div`
 padding: 30px 20px 0 20px;
-height: 100vh;
+min-height: 100vh;
+height: 100%;
 p{
     font-size: 18px;
     color: #666666;
@@ -290,21 +292,26 @@ display: flex;
 justify-content: flex-end;
 margin-top: 10px;
 align-items: center;
-h3{
-    margin-right: 20px;
-    color: #52B6FF;
-    font-size: 16px;
-    font-weight: 400;
-}
-button{
+`
+
+const Submit = styled.button`
     background-color: #52B6FF;
     color: #FFFFFF;
     height: 35px;
     width: 84px;
     border: none;
     border-radius: 5px;
-}
 `
+
+const Cancel = styled.button`
+    margin-right: 20px;
+    color: #52B6FF;
+    font-size: 16px;
+    font-weight: 400;
+    background-color: transparent;
+    border: none;
+`
+
 const SingleHabit = styled.div`
 padding: 20px;
 background-color: #FFFFFF;

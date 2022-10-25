@@ -39,7 +39,8 @@ export default function HabitsPage() {
                     addHabit={addHabit}
                     setAddHabit={setAddHabit}
                 />
-                <p>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</p>
+                {addHabit === [] ? <p>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</p> : ""}
+                
             </ContainerContent>
             <Footer />
         </Container>

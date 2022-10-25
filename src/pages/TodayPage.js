@@ -6,7 +6,8 @@ import { InfoContext } from "../context/Info";
 import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import dayjs from "dayjs"
-import { render } from "react-dom";
+import Percentage from "../components/Percentage";
+
 
 export default function TodayPage() {
 
@@ -122,7 +123,9 @@ export default function TodayPage() {
                     <ContainerContent>
                         <Day>
                             <h3>{date}</h3>
-                            <h5>Nenhum hábito concluído ainda</h5>
+                            <Percentage 
+                            todayHabit = {todayHabit}
+                            >Nenhum hábito concluído ainda</Percentage>
                         </Day>
 
                         {todayHabit.map((h) =>
@@ -155,6 +158,7 @@ export default function TodayPage() {
 const Container = styled.div`
 background-color: #E5E5E5;
 height: fit-content;
+padding-bottom: 100px;
 `
 const ContainerWrapper = styled.div`
 background-color: #E5E5E5;

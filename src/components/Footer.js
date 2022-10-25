@@ -8,7 +8,9 @@ export default function Footer (){
                 <Link to={`/habitos`}>
                     <h2>Hábitos</h2>
                 </Link>
-                <p>Hoje</p>
+                <Link to={`/hoje`}>
+                    <p>Hoje</p>
+                </Link>
                 <Link to={`/historico`}>
                     <h2>Histórico</h2>
                 </Link>

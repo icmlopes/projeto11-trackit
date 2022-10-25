@@ -1,13 +1,16 @@
 import styled from "styled-components";
 import NavBar from "../../components/NavBar";
 import Footer from "../../components/Footer";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import axios from "axios"
 import { InfoContext } from "../../context/Info";
+import trash from "../../assets/img/Trash-can.png"
 
 export default function HabitsPage() {
 
+
     const [openHabitInput, setOpenHabitInput] = useState(false)
+    const [addHabit, setAddHabit] = useState([])
 
     function handleOpenHabitInput() {
         if (openHabitInput === false) {
@@ -25,9 +28,16 @@ export default function HabitsPage() {
                 </NewHabits>
 
                 {openHabitInput ?
-                    <CreateHabitInput />
+                    <CreateHabitInput
+                        addHabit={addHabit}
+                        setAddHabit={setAddHabit}
+                        setOpenHabitInput={setOpenHabitInput}
+                    />
                     : <></>}
-
+                <ExistingHabit
+                    addHabit={addHabit}
+                    setAddHabit={setAddHabit}
+                />
                 <p>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</p>
             </ContainerContent>
             <Footer />
@@ -35,13 +45,14 @@ export default function HabitsPage() {
     )
 }
 
-function CreateHabitInput() {
+function CreateHabitInput({ addHabit, setAddHabit, setOpenHabitInput }) {
 
     const week = ["D", "S", "T", "Q", "Q", "S", "S"]
-    const {user, setUser} = useContext(InfoContext);
+    const { user, setUser } = useContext(InfoContext);
     const [days, setDays] = useState([])
     const [isDisabled, setIsDisabled] = useState(false)
     const [inputTitle, setInputTitle] = useState("")
+    // const [addHabit, setAddHabit] = useState([])
 
     function handleSelectedDay(d, index) {
         console.log(index)
@@ -59,6 +70,8 @@ function CreateHabitInput() {
     function handleSubmit(event) {
         event.preventDefault();
 
+        setOpenHabitInput(false)
+
         const body = {
             name: inputTitle,
             days: days
@@ -73,17 +86,17 @@ function CreateHabitInput() {
         console.log(user)
 
         const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits";
-        
+
         const promise = axios.post(URL, body, config)
 
-         promise.then((res) => {
+        promise.then((res) => {
+            setAddHabit(res.data)
             console.log(res.data)
-            console.log("Deu certo")
-         })
+        })
 
-         promise.catch((err) => {
+        promise.catch((err) => {
             console.log(err.response.data)
-         })
+        })
     }
 
     return (
@@ -117,13 +130,85 @@ function CreateHabitInput() {
     )
 }
 
+function ExistingHabit({ addHabit, setAddHabit }) {
+
+    const week = ["D", "S", "T", "Q", "Q", "S", "S"]
+    const { user, setUser } = useContext(InfoContext);
+    const [renderHabits, setRenderHabbits] = useState([])
+
+    const config = {
+        headers: {
+            "Authorization": `Bearer ${user.token}`
+        }
+    }
+
+    const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits";
+
+    useEffect(() => {
+        const promise = axios.get(URL, config)
+
+        promise.then((res) => {
+            console.log(res.data)
+            setRenderHabbits(res.data)
+
+        })
+
+        promise.catch((err) => {
+            console.log(err.response.data)
+        })
+    }, [addHabit])
+
+    console.log(addHabit)
+    console.log(addHabit.length)
+    if (renderHabits.length === 0)
+        return <div></div>
+
+    else {
+        return (
+            <>
+                {renderHabits.map((h) =>
+                    <SingleHabit>
+                        <ContainerExistingHabit>
+                            <Decription>{h.name}</Decription>
+                            <img src={trash} alt="Lixo" />
+                        </ContainerExistingHabit>
+                        <ContainerWeekDays>
+                            <>
+                                <PrintWeekDays week={week} days={h.days} />
+                            </>
+                        </ContainerWeekDays>
+                    </SingleHabit>
+                )
+                }
+            </>
+        )
+
+    }
+
+}
+
+function PrintWeekDays({ week, days }) {
+    console.log(days);
+    return (
+        <ContainerWeekDays>
+            {week.map((d, index) =>
+                <WeekDays
+                    selecionado={days.includes(index) ? true : false}
+                >{d}</WeekDays>
+            )}
+        </ContainerWeekDays>
+    )
+}
+
 const Container = styled.div`
 background-color: #E5E5E5;
-height: 100vh;
+height: fit-content;
+
 `
 
 const ContainerContent = styled.div`
 padding: 30px 20px 0 20px;
+height: 100vh;
 p{
     font-size: 18px;
     color: #666666;
@@ -175,8 +260,8 @@ input{
 const Button = styled.button`
     width: 20px;
     height: 20px;
-    background-color: ${({ selecionado }) => selecionado === true ? "yellow" : "blue"};
-    color: #DBDBDB;
+    background-color: ${({ selecionado }) => selecionado === true ? "#CBCBCB" : "#FFFFFF"};
+    color: ${({ selecionado }) => selecionado === true ? "#FFFFFF" : "#CBCBCB"};
     border: 1px solid #DBDBDB;
     margin-right: 3px;
     border-radius: 5px;
@@ -219,4 +304,43 @@ button{
     border: none;
     border-radius: 5px;
 }
+`
+const SingleHabit = styled.div`
+padding: 20px;
+background-color: #FFFFFF;
+height: 50px;
+border-radius: 5px;
+margin-top: 25px;
+
+img{
+    width: 13px;
+    height: 15px;
+}
+`
+
+const ContainerExistingHabit = styled.div`
+display: flex;
+justify-content: space-between;
+margin-bottom: 10px;
+`
+const WeekDays = styled.div`
+    width: 20px;
+    height: 20px;
+    background-color: ${({ selecionado }) => selecionado === true ? "#CBCBCB" : "#FFFFFF"};
+    color: ${({ selecionado }) => selecionado === true ? "#FFFFFF" : "#CBCBCB"};
+    border: 1px solid #DBDBDB;
+    margin-right: 3px;
+    border-radius: 5px;
+    padding: 1px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+`
+const Decription = styled.div`
+    font-size: 20px;
+    font-weight: 400;
+    color: #666666;
+`
+const ContainerWeekDays = styled.div`
+display: flex;
 `
